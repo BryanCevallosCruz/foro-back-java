@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lab.foro.domain.Comment;
 import com.lab.foro.service.CommentService;
+import com.lab.foro.service.dto.CommentSaveDto;
 import com.lab.foro.service.dto.CommentUpdateDto;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,11 @@ import java.util.List;
 
 @Service
 public class CommentServiceImpl implements CommentService {
-
-
+    ObjectMapper objectMapper = new ObjectMapper();
+    File jsonFile = new File("src/main/resources/datosComments.json");
 
     @Override
     public List<Comment> getCommentsFromJsonFile() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        File jsonFile = new File("src/main/resources/datosComments.json");
         List<Comment>  comments = objectMapper.readValue(jsonFile, new TypeReference<List<Comment>>() {});
 
         return comments;
@@ -39,8 +38,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void updateCommentById(Long id, CommentUpdateDto comment) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        File jsonFile = new File("src/main/resources/datosComments.json");
         List<Comment>  comments = objectMapper.readValue(jsonFile, new TypeReference<List<Comment>>() {});
 
         for(Comment commentEdit: comments)
@@ -52,14 +49,23 @@ public class CommentServiceImpl implements CommentService {
             }
         }
 
-        objectMapper.writeValue(new File("src/main/resources/datosComments.json"),comments);
+        objectMapper.writeValue(jsonFile,comments);
 
     }
 
     @Override
-    public List<Comment> getAll()
-    {
-        return null;
+    public void saveComment(Comment comment) throws IOException {
+        List<Comment>  comments = objectMapper.readValue(jsonFile, new TypeReference<List<Comment>>() {});
+
+        comments.add(comment);
+        objectMapper.writeValue(jsonFile, comments);
+    }
+
+    @Override
+    public void deleteComment(Long idComment) throws IOException {
+        List<Comment>  comments = objectMapper.readValue(jsonFile, new TypeReference<List<Comment>>() {});
+        comments.removeIf(c->c.getId()==idComment);
+        objectMapper.writeValue(jsonFile,comments);
     }
 
 }

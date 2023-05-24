@@ -4,7 +4,6 @@ import com.lab.foro.domain.Comment;
 import com.lab.foro.service.dto.CommentUpdateDto;
 import com.lab.foro.service.impl.CommentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -21,11 +20,6 @@ public class CommentController {
         return commentService.getCommentsFromJsonFile();
     }
 
-    @GetMapping("/lista")
-    public List<Comment> getAll() {
-        return commentService.getAll();
-    }
-
     @GetMapping("/{id}")
     public Comment getCommentById(@PathVariable("id") Long id) throws IOException {
         return commentService.getCommentById(id);
@@ -35,5 +29,16 @@ public class CommentController {
     public void updateComment(@PathVariable Long id, @RequestBody CommentUpdateDto comment) throws Exception
     {
         commentService.updateCommentById(id, comment);
+    }
+
+    @PostMapping
+    public void postComment(@RequestBody Comment comment) throws IOException{
+        commentService.saveComment(comment);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteComment(@PathVariable Long id) throws IOException
+    {
+        commentService.deleteComment(id);
     }
 }
