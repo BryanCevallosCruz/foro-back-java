@@ -1,12 +1,1 @@
-[
-  {
-    "id": 1,
-    "name": "Bryan Cevallos",
-    "comment": "Estoy inicializando el archivo json"
-  },
-  {
-    "id": 2,
-    "name": "Julio",
-    "comment": "Este es el segundo comentario."
-  }
-]
+[{"id":1,"name":"Bryan Cevallos","comment":"Estoy inicializando el archivo json"},{"id":2,"name":"Julio","comment":"Modificado"}]
