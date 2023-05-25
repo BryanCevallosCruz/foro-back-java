@@ -17,4 +17,8 @@ public interface CommentService {
 
     void deleteComment(Long id) throws IOException;
 
+    void saveCommentSub1(Long id, Comment comment) throws IOException;
+
+    void saveCommentSub2(Long id, Long idSub1, Comment comment) throws IOException;
+
 }

@@ -26,7 +26,8 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public void updateComment(@PathVariable Long id, @RequestBody CommentUpdateDto comment) throws Exception
+    public void updateComment(@PathVariable Long id,
+                              @RequestBody CommentUpdateDto comment) throws Exception
     {
         commentService.updateCommentById(id, comment);
     }
@@ -41,4 +42,17 @@ public class CommentController {
     {
         commentService.deleteComment(id);
     }
+    @PutMapping("/comment/{id}")
+    public void putNewSubComment(@PathVariable Long id,
+                                 @RequestBody Comment comment) throws IOException{
+        commentService.saveCommentSub1(id, comment);
+    }
+
+    @PutMapping("/comment/{id}/{idSub1}")
+    public void putNewSubSubComment(@PathVariable Long id,
+                                    @PathVariable Long idSub1,
+                                    @RequestBody Comment comment) throws IOException{
+        commentService.saveCommentSub2(id, idSub1, comment);
+    }
+
 }

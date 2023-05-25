@@ -20,7 +20,6 @@ public class CommentServiceImpl implements CommentService {
     ObjectMapper objectMapper = new ObjectMapper();
     String filePath = "src/main/resources/datosComments.json";
     File jsonFile = new File(filePath);
-    //List<Comment> comments;
 
     private List<Comment> InitializeJson() throws IOException{
         List<Comment> comments;
@@ -63,9 +62,7 @@ public class CommentServiceImpl implements CommentService {
                 break;
             }
         }
-
         objectMapper.writeValue(jsonFile,comments);
-
     }
 
     @Override
@@ -80,6 +77,56 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> comments = InitializeJson();
         comments.removeIf(c->c.getId()==idComment);
         objectMapper.writeValue(jsonFile,comments);
+    }
+
+    @Override
+    public void saveCommentSub1(Long id, Comment comment) throws IOException {
+        List<Comment> comments = InitializeJson();
+        List<Comment> commentSub1 = new ArrayList<>();
+
+        for(Comment commentEdit: comments)
+        {
+            if (commentEdit.getId() == id)
+            {
+                if (commentEdit.getCommentSub()!=null){
+                    for(Comment commentEditSub: commentEdit.getCommentSub()) {
+                        commentSub1.add(commentEditSub);
+                    }
+                }
+                commentSub1.add(comment);
+                commentEdit.setCommentSub(commentSub1);
+                break;
+            }
+        }
+        objectMapper.writeValue(jsonFile,comments);
+    }
+
+    @Override
+    public void saveCommentSub2(Long id, Long idSub1, Comment comment) throws IOException {
+        List<Comment> comments = InitializeJson();
+        List<Comment> commentSub2 = new ArrayList<>();
+        outerLoop:
+        for(Comment commentEdit: comments)
+        {
+            if (commentEdit.getId() == id)
+            {
+                for(Comment commentEditSub1: commentEdit.getCommentSub()){
+                    if(commentEditSub1.getId() == idSub1){
+                        if(commentEditSub1.getCommentSub() != null){
+                            for(Comment commentEditSub2 : commentEditSub1.getCommentSub()){
+                                commentSub2.add(commentEditSub2);
+                            }
+                        }
+                        commentSub2.add(comment);
+                        //commentEdit.setCommentSub(commentEditSub1.setCommentSub(commentSub2));
+                        commentEditSub1.setCommentSub(commentSub2);
+                        break outerLoop;
+                    }
+                }
+            }
+        }
+        objectMapper.writeValue(jsonFile,comments);
+
     }
 
 }
