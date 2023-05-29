@@ -12,6 +12,7 @@ public class Comment {
 
     private Long id;
     private  String name;
+    private String profilePhoto;
     private String comment;
     private String date;
     private List<Comment> commentSub;

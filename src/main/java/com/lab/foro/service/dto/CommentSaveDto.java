@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class CommentSaveDto {
     private Long id;
     private String name;
+    private String profilePhoto;
     private String comment;
     private String date;
 }
