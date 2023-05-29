@@ -51,6 +51,7 @@ public class CommentServiceImpl implements CommentService {
         return comment;
     }
 
+
     @Override
     public void updateCommentById(Long id, CommentUpdateDto comment) throws IOException {
         List<Comment> comments = InitializeJson();
@@ -67,9 +68,24 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void saveComment(Comment comment) throws IOException {
+        List<Comment> commentList = getCommentsFromJsonFile();
+        Long idComment = getLastId(commentList);
+        comment.setId(idComment);
         List<Comment> comments = InitializeJson();
         comments.add(comment);
         objectMapper.writeValue(jsonFile, comments);
+    }
+
+    public Long getLastId(List<Comment> commentList) throws IOException{
+        Long idComment = 1L;
+        if (commentList.size()>=1){
+            int lastIndex = commentList.size() - 1;
+            Comment lastComment = commentList.get(lastIndex);
+            if (lastComment.getId()!=null){
+                idComment = lastComment.getId()+1;
+            }
+        }
+        return idComment;
     }
 
     @Override
@@ -93,8 +109,12 @@ public class CommentServiceImpl implements CommentService {
                         commentSub1.add(commentEditSub);
                     }
                 }
+                Long idComment = getLastId(commentSub1);
+                comment.setId(idComment);
+
                 commentSub1.add(comment);
                 commentEdit.setCommentSub(commentSub1);
+
                 break;
             }
         }
@@ -117,6 +137,10 @@ public class CommentServiceImpl implements CommentService {
                                 commentSub2.add(commentEditSub2);
                             }
                         }
+
+                        Long idComment = getLastId(commentSub2);
+                        comment.setId(idComment);
+
                         commentSub2.add(comment);
                         //commentEdit.setCommentSub(commentEditSub1.setCommentSub(commentSub2));
                         commentEditSub1.setCommentSub(commentSub2);
@@ -127,6 +151,16 @@ public class CommentServiceImpl implements CommentService {
         }
         objectMapper.writeValue(jsonFile,comments);
 
+    }
+
+    @Override
+    public void deleteCommentSub1(Long id, Long idSub1) throws IOException {
+       //TO-DO: Implementar el método
+    }
+
+    @Override
+    public void deleteCommentSub2(Long id, Long idSub1, Long idSub2) throws IOException {
+        //TO-DO: Implementar el método
     }
 
 }

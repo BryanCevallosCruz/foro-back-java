@@ -11,4 +11,5 @@ public class CommentSaveDto {
     private Long id;
     private String name;
     private String comment;
+    private String date;
 }
